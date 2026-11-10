@@ -1,0 +1,195 @@
+{
+  "fetched": "2026-11-03",
+  "files": [
+    {
+      "file": "sintel-trailer-h264-aac.mp4",
+      "sha256": "488e4ea706caa34b037706e71eb8bc763e307d1d412b1df4c5155879f09fcea2",
+      "bytes": 350011,
+      "source": "Sintel",
+      "source_url": "https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "© copyright Blender Foundation | durian.blender.org",
+      "terms_url": "https://durian.blender.org/sharing/",
+      "method": "stream copy, 12 s to 14 s",
+      "covers": [
+        "H.264 High",
+        "AAC LC stereo",
+        "MP4"
+      ]
+    },
+    {
+      "file": "sintel-trailer-h264-aac-2subs.mkv",
+      "sha256": "84613dbd015d12df151e218e6b9a9376287f1c76f51f1cc4554048efd6d65f26",
+      "bytes": 697000,
+      "source": "Sintel",
+      "source_url": "https://download.blender.org/durian/trailer/Sintel_Trailer.480p.DivX_Plus_HD.mkv",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "© copyright Blender Foundation | durian.blender.org",
+      "terms_url": "https://durian.blender.org/sharing/",
+      "method": "stream copy from 12 s, starts on the prior keyframe",
+      "covers": [
+        "H.264 High",
+        "AAC LC",
+        "two SubRip tracks (eng, fre) with titles",
+        "Matroska"
+      ]
+    },
+    {
+      "file": "sintel-trailer-mpeg4-mp3.avi",
+      "sha256": "864f99c8ae7e9a4e97aa45aaa2d869c6669a65eda6d65cbec8837078e86aeceb",
+      "bytes": 289224,
+      "source": "Sintel",
+      "source_url": "https://download.blender.org/durian/trailer/Sintel_Trailer.480p.DivX_Home_Theater.divx",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "© copyright Blender Foundation | durian.blender.org",
+      "terms_url": "https://durian.blender.org/sharing/",
+      "method": "video stream copy from 13.9 s; MP3 re-encoded because a copied cut starts mid-frame",
+      "covers": [
+        "MPEG-4 Part 2 with DX50 (DivX) tag",
+        "MP3",
+        "AVI"
+      ]
+    },
+    {
+      "file": "sintel-trailer-theora-vorbis.ogv",
+      "sha256": "a9dfa67de64f38f02271c6916b117800ce05c827f38158729b12f73c8364062f",
+      "bytes": 122928,
+      "source": "Sintel",
+      "source_url": "https://download.blender.org/durian/trailer/sintel_trailer-480p.ogv",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "© copyright Blender Foundation | durian.blender.org",
+      "terms_url": "https://durian.blender.org/sharing/",
+      "method": "stream copy of the first 2 s, skeleton data streams dropped; a cut from mid-file left Theora with broken granule timestamps",
+      "covers": [
+        "Theora",
+        "Vorbis",
+        "Ogg",
+        "dark fade-in"
+      ]
+    },
+    {
+      "file": "sintel-h264-ac3-5.1-subs-chapters.mkv",
+      "sha256": "b7d5afd0b7d235daff5bb2b2cf8c3400b14c3787a1cb465565405969584fe733",
+      "bytes": 170984,
+      "source": "Sintel",
+      "source_url": "https://download.blender.org/demo/movies/Sintel.2010.1080p.mkv",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "© copyright Blender Foundation | durian.blender.org",
+      "terms_url": "https://durian.blender.org/sharing/",
+      "method": "from 147.7 s; AC3 and subtitles stream copied, video re-encoded to 480p H.264 to fit the size budget, the two chapters around the 148.667 s boundary kept with original titles",
+      "covers": [
+        "AC3 5.1 at 640 kb/s",
+        "ten SubRip tracks with languages",
+        "chapter boundary inside the clip",
+        "subtitle event running past the last video frame",
+        "dark scene",
+        "Matroska"
+      ]
+    },
+    {
+      "file": "sintel-music-fx.flac",
+      "sha256": "d4efbf450f762e347a1a43686a32315d2b4c488cd3e6d9683a4104f522a3e466",
+      "bytes": 230475,
+      "source": "Sintel",
+      "source_url": "https://download.blender.org/durian/movies/sintel-m%2Be-st.flac",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "© copyright Blender Foundation | durian.blender.org",
+      "terms_url": "https://durian.blender.org/sharing/",
+      "method": "3 s from 120 s, FLAC re-encoded so the header carries the clip length (lossless)",
+      "covers": [
+        "FLAC stereo 48 kHz"
+      ]
+    },
+    {
+      "file": "tos-h264-mp3.mov",
+      "sha256": "5c2faccf11cc0a529e21dd81e5f03325355d69f146c7baf8f567bf2c6ab3a125",
+      "bytes": 1411247,
+      "source": "Tears of Steel",
+      "source_url": "https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "(CC) Blender Foundation | mango.blender.org",
+      "terms_url": "https://mango.blender.org/sharing/",
+      "method": "stream copy, 300 s to 302 s",
+      "covers": [
+        "H.264 Main 1280x534",
+        "MP3 in MOV",
+        "QuickTime"
+      ]
+    },
+    {
+      "file": "bbb-vp9-opus.webm",
+      "sha256": "8d5ac6d3d38943860b5c320fdcfb238a4df1518a9f8e28b571ca16828ca83210",
+      "bytes": 89315,
+      "source": "Big Buck Bunny",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Blender Foundation | www.blender.org",
+      "terms_url": "https://peach.blender.org/about/",
+      "method": "stream copy of the Wikimedia Commons transcode, 60.471 s to 62.471 s",
+      "covers": [
+        "VP9 at 60 fps",
+        "Opus 5.1 (six channels)",
+        "WebM"
+      ]
+    },
+    {
+      "file": "bbb-mpeg4-mp3.mov",
+      "sha256": "1b6d25a4a843713e0fe2b1fa930e1967aaa6f5055ae2c7798dff29c441462e14",
+      "bytes": 169669,
+      "source": "Big Buck Bunny",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.360p.mpeg4.mov",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Blender Foundation | www.blender.org",
+      "terms_url": "https://peach.blender.org/about/",
+      "method": "stream copy of the Wikimedia Commons transcode, 60.467 s to 62.467 s",
+      "covers": [
+        "MPEG-4 Part 2 in MOV",
+        "MP3 in MOV",
+        "60 fps"
+      ]
+    },
+    {
+      "file": "apple-hevc-10bit-hlg-rotated.mov",
+      "sha256": "b0fdc6ca43ec227279cdda8e5d4124251690ca7f0afd2ac5c8779d81bbdd419a",
+      "bytes": 329448,
+      "source": "Big Buck Bunny",
+      "source_url": "bbb-vp9-opus.webm",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Blender Foundation | www.blender.org",
+      "terms_url": "https://peach.blender.org/about/",
+      "method": "made locally: VideoToolbox HEVC Main 10 at 30 fps with hvc1 tag, AAC through AudioToolbox, then remuxed with a 90 degree display matrix and HLG BT.2020 tags. Stands in for an iPhone clip; the pixels are SDR content tagged HLG",
+      "covers": [
+        "HEVC Main 10 hvc1",
+        "display matrix rotation 90",
+        "HLG BT.2020 color tags",
+        "Apple encoders"
+      ]
+    },
+    {
+      "file": "av1-aac.mp4",
+      "sha256": "ba9c62137a45b3d0fd23e099ada6faed6a73c130031852f9cc45e7000ac070aa",
+      "bytes": 82734,
+      "source": "Big Buck Bunny",
+      "source_url": "bbb-vp9-opus.webm",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Blender Foundation | www.blender.org",
+      "terms_url": "https://peach.blender.org/about/",
+      "method": "made locally: SVT-AV1 at CRF 40, 30 fps, AAC through AudioToolbox",
+      "covers": [
+        "AV1 Main",
+        "AAC in MP4"
+      ]
+    }
+  ]
+}

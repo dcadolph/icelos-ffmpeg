@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Pinned sources for the FFmpeg that ships inside Icelos.app, read by build-ffmpeg.sh and
+# third-party.sh. One source per line, tab-separated: name, version, license (SPDX), tarball URL,
+# SHA-256 of the tarball. Lines are in build order. Lines starting with # are comments.
+libogg	1.3.6	BSD-3-Clause	https://downloads.xiph.org/releases/ogg/libogg-1.3.6.tar.xz	5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061
+libvorbis	1.3.7	BSD-3-Clause	https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.xz	b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b
+libtheora	1.2.0	BSD-3-Clause	https://downloads.xiph.org/releases/theora/libtheora-1.2.0.tar.xz	ebdf77a8f5c0a8f7a9e42323844fa09502b34eb1d1fece7b5f54da41fe2122ec
+opus	1.6.1	BSD-3-Clause	https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz	6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1
+lame	4.0	LGPL-2.0-or-later	https://downloads.sourceforge.net/project/lame/lame/4.0/lame-4.0.tar.gz	3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb
+opencore-amr	0.1.6	Apache-2.0	https://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.6.tar.gz	483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1
+freetype	2.15.0	FTL OR GPL-2.0-or-later	https://download.savannah.gnu.org/releases/freetype/freetype-2.15.0.tar.xz	93cd47eb719c325107f2d3cf087d06299e944c3b48a40b55537302304dea1dd5
+fribidi	1.0.18	LGPL-2.1-or-later	https://github.com/fribidi/fribidi/releases/download/v1.0.18/fribidi-1.0.18.tar.xz	1de5e8073d035388b71d0b2d452b1da1f8caeea8a7702997b401fe1b6250727f
+harfbuzz	15.0.0	MIT	https://github.com/harfbuzz/harfbuzz/releases/download/15.0.0/harfbuzz-15.0.0.tar.xz	968536e9abd782f07f7954044c0c4020199fcdd39b41d221ec42d2a3be4a44df
+libass	0.17.5	ISC	https://github.com/libass/libass/releases/download/0.17.5/libass-0.17.5.tar.xz	2dca25c0e0c837ddf00b52011b3f82cac1e4ddd3ad018227806b0c2288864acc
+libwebp	1.6.0	BSD-3-Clause	https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0.tar.gz	e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564
+brotli	1.2.1	MIT	https://github.com/google/brotli/archive/refs/tags/v1.2.1.tar.gz	98d35d11a78dc453aebb7d10c3748f3f73ff78c8267c0dc697b8631f67bf7e8f
+highway	1.4.0	Apache-2.0 OR BSD-3-Clause	https://github.com/google/highway/releases/download/1.4.0/highway-1.4.0.tar.gz	36f672ab48ddb3c8555e9e89e16fe400cd7d16c6eb455a1a3d0c146a63ababdc
+lcms2	2.20	MIT	https://github.com/mm2/Little-CMS/releases/download/lcms2.20/lcms2-2.20.tar.gz	18ff5504fa9cc8a2b1f3591180d90ead16c8a2ea78e530523b46eab70e1ca6b9
+libjxl	0.12.0	BSD-3-Clause	https://github.com/libjxl/libjxl/archive/refs/tags/v0.12.0.tar.gz	03e9be69a30be4011f559da75328b6d7cea8ad921fabfbd551ce10bf45cdc992
+libvpx	1.17.0	BSD-3-Clause	https://github.com/webmproject/libvpx/archive/refs/tags/v1.17.0.tar.gz	1020f184046187baa2985dbde38e0691f49c44088bca7a1842b0236c6081dc0a
+x264	0.165-b35605a	GPL-2.0-or-later	https://code.videolan.org/videolan/x264/-/archive/b35605ace3ddf7c1a5d67a2eb553f034aef41d55/x264-b35605ace3ddf7c1a5d67a2eb553f034aef41d55.tar.bz2	6eeb82934e69fd51e043bd8c5b0d152839638d1ce7aa4eea65a3fedcf83ff224
+x265	4.2	GPL-2.0-or-later	https://bitbucket.org/multicoreware/x265_git/downloads/x265_4.2.tar.gz	40b1ea0453e0309f0eba934e0ddf533f8f6295966679e8894e8f1c1c8d5e1210
+svt-av1	4.3.0	BSD-3-Clause-Clear	https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v4.3.0/SVT-AV1-v4.3.0.tar.gz	95ce8fc2381ba707e65ac8b9b2e165915bfbe9cd4d2f7b0f58d64ce31bd98f6d
+dav1d	1.5.4	BSD-2-Clause	https://downloads.videolan.org/pub/videolan/dav1d/1.5.4/dav1d-1.5.4.tar.xz	686616b7c69eb88d44459391ab25cac13b6647a3b288835c5784e71c1514a5c5
+ffmpeg	9.0.2	GPL-3.0-or-later	https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz	8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e

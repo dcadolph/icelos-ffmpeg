@@ -1,0 +1,83 @@
+name: release
+
+# On an icelos-vX.Y.Z tag, publish the corresponding source for that Icelos version's LGPL FFmpeg:
+# every tarball the LGPL build needs, checked against its pinned SHA-256, with the recipe that
+# builds them, packed as Icelos_vX.Y.Z_ffmpeg_lgpl_source.tar beside MANIFEST-lgpl.
+on:
+  push:
+    tags:
+      - "icelos-v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source:
+    runs-on: macos-15
+    timeout-minutes: 30
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch and verify the LGPL sources
+        env:
+          ICELOS_FFMPEG_LICENSE: lgpl
+        run: ./build-ffmpeg.sh --fetch-only
+      - name: Pack the corresponding source
+        run: |
+          set -euo pipefail
+          version="${TAG#icelos-}"
+          case "$version" in
+          v[0-9]*.[0-9]*.[0-9]*) ;;
+          *)
+            echo "::error::tag $TAG is not icelos-vX.Y.Z"
+            exit 1
+            ;;
+          esac
+          name="Icelos_${version}_ffmpeg_lgpl_source"
+          src=.build/ffmpeg/src
+          dist="$RUNNER_TEMP/dist"
+          top="$RUNNER_TEMP/stage/$name"
+          mkdir -p "$top/$src" "$dist"
+          cp -- build-ffmpeg.sh ffmpeg-sources.txt gpl-guard.sh LICENSE.recipe "$top/"
+          while read -r f; do
+            cp -- "$src/$f" "$top/$src/"
+          done <"$src/MANIFEST-lgpl"
+          cat >"$top/README.txt" <<README
+          Corresponding source for the ffmpeg and ffprobe binaries inside Icelos $version.
+
+          These are LGPL binaries, built without x264 and x265. .build/ffmpeg/src holds every source
+          tarball the build needs. Running ICELOS_FFMPEG_LICENSE=lgpl ./build-ffmpeg.sh arm64 (or x86_64)
+          from this folder verifies their SHA-256 sums and builds the binaries with no download.
+          Prerequisites are listed at the top of the script. The build recipe is public at
+          https://github.com/dcadolph/icelos-ffmpeg under LGPL-2.1-or-later, in LICENSE.recipe.
+          README
+          COPYFILE_DISABLE=1 tar -cf "$dist/$name.tar" -C "$RUNNER_TEMP/stage" "$name"
+          cp -- "$src/MANIFEST-lgpl" "$dist/MANIFEST-lgpl"
+          if tar -tf "$dist/$name.tar" | grep -E '/x26[45]-'; then
+            echo "::error::the LGPL source holds a GPL encoder"
+            exit 1
+          fi
+          want="$(grep -c . "$src/MANIFEST-lgpl")"
+          got="$(tar -tf "$dist/$name.tar" | grep -c "/$src/.")"
+          if [ "$got" != "$want" ]; then
+            echo "::error::the tar holds $got tarballs, MANIFEST-lgpl names $want"
+            exit 1
+          fi
+          shasum -a 256 -- "$dist/$name.tar" "$dist/MANIFEST-lgpl"
+          echo "SOURCE_TAR=$dist/$name.tar" >>"$GITHUB_ENV"
+          echo "MANIFEST=$dist/MANIFEST-lgpl" >>"$GITHUB_ENV"
+      - name: Attach the source to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --verify-tag --generate-notes \
+              --title "$TAG: FFmpeg Source for Icelos ${TAG#icelos-}"
+          fi
+          gh release upload "$TAG" "$SOURCE_TAR" "$MANIFEST" --clobber

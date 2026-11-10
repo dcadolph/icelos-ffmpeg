@@ -1,0 +1,154 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The verifier and its packages against a pinned FFmpeg 9.0.2. No test may skip.
+  go:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      FFMPEG_TAG: autobuild-2026-10-31-12-59
+      FFMPEG_ASSET: ffmpeg-n9.0.2-39-g7adfbe40dc-linux64-gpl-9.0.tar.xz
+      FFMPEG_SHA256: 73e29a56974ae5a651133a04584c7483b21afe941e17dc91d79814a758b608d3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      # BtbN prunes old releases, so the tarball is kept on its sum and checked after every restore.
+      - name: Cache the FFmpeg download
+        uses: actions/cache@v6
+        with:
+          path: ${{ runner.temp }}/ffmpeg-download
+          key: btbn-ffmpeg-${{ env.FFMPEG_SHA256 }}
+      - name: Fetch FFmpeg
+        run: |
+          set -euo pipefail
+          dl="$RUNNER_TEMP/ffmpeg-download"
+          mkdir -p "$dl" "$RUNNER_TEMP/ffmpeg"
+          if [ ! -f "$dl/$FFMPEG_ASSET" ]; then
+            curl -fsSL --retry 6 --retry-delay 20 -o "$dl/$FFMPEG_ASSET" \
+              "https://github.com/BtbN/FFmpeg-Builds/releases/download/$FFMPEG_TAG/$FFMPEG_ASSET"
+          fi
+          echo "$FFMPEG_SHA256  $dl/$FFMPEG_ASSET" | sha256sum -c -
+          tar -xJf "$dl/$FFMPEG_ASSET" --strip-components=1 -C "$RUNNER_TEMP/ffmpeg"
+          echo "$RUNNER_TEMP/ffmpeg/bin" >> "$GITHUB_PATH"
+      - name: Require the pinned FFmpeg
+        run: |
+          set -euo pipefail
+          command -v ffmpeg ffprobe
+          ffmpeg -hide_banner -version | head -1 | grep -E '^ffmpeg version n?9\.0\.2'
+      - run: go build ./...
+      - run: go vet ./...
+      - run: GOOS=windows go vet ./...
+      - name: Test
+        run: |
+          set -o pipefail
+          go test -race -count=1 -timeout 20m -json ./... | tee "$RUNNER_TEMP/go-test.json" |
+            jq -Rrj '. as $l | try (fromjson | select(.Action == "output" or .Action == "build-output") | .Output) catch ($l + "\n")'
+      - name: Fail on skipped tests
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+          jq -Rr 'fromjson? | select(.Action == "skip" and .Test != null) | "\(.Package) \(.Test)"' \
+            "$RUNNER_TEMP/go-test.json" > "$RUNNER_TEMP/skipped.txt"
+          n="$(wc -l < "$RUNNER_TEMP/skipped.txt" | tr -d ' ')"
+          echo "skipped tests: $n"
+          if [ "$n" != 0 ]; then
+            sed 's/^/::error::skipped: /' "$RUNNER_TEMP/skipped.txt"
+            exit 1
+          fi
+      # The verifier only measures: every ffmpeg command line it builds writes to standard output
+      # through null or a hash muxer, never to a file.
+      - name: No-convert test
+        run: go test -count=1 -run 'TestNoOutputFile|TestArgvProblems' -v ./verify
+
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SHELLCHECK_VERSION: v0.11.0
+      SHELLCHECK_SHA256: 8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198
+      ACTIONLINT_VERSION: v1.7.12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Fetch shellcheck
+        run: |
+          set -euo pipefail
+          tarball="$RUNNER_TEMP/shellcheck.tar.xz"
+          curl -fsSL --retry 6 --retry-delay 20 -o "$tarball" \
+            "https://github.com/koalaman/shellcheck/releases/download/$SHELLCHECK_VERSION/shellcheck-$SHELLCHECK_VERSION.linux.x86_64.tar.xz"
+          echo "$SHELLCHECK_SHA256  $tarball" | sha256sum -c -
+          tar -xJf "$tarball" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/shellcheck-$SHELLCHECK_VERSION" >> "$GITHUB_PATH"
+      - name: shellcheck
+        run: |
+          set -euo pipefail
+          shellcheck --version
+          git ls-files -z '*.sh' | xargs -0 shellcheck
+          git ls-files -z '*.sh' | xargs -0 -n1 bash -n
+      - name: actionlint
+        run: |
+          go run "github.com/rhysd/actionlint/cmd/actionlint@$ACTIONLINT_VERSION" \
+            -shellcheck "$RUNNER_TEMP/shellcheck-$SHELLCHECK_VERSION/shellcheck"
+
+  # The wall: nothing from the private app may reach this repository. No Swift, no engine, no
+  # in-app purchase code, no import of the private module or its private packages, and no notice
+  # that reserves all rights apart from the FreeType credit its license requires.
+  wall:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wall check
+        run: |
+          set -euo pipefail
+          # files lists every tracked file, NUL-separated.
+          files() { git ls-files -z; }
+          # The two banned strings are split so this file does not match itself.
+          kit="Store""Kit"
+          reserved="All rights"" reserved"
+          # The FreeType credit is the one allowed notice: the FreeType License asks for that line as is.
+          freetype="third-party.sh:FreeType Project (www.freetype.org). ${reserved}."
+          if [ "$(files | tr '\0' '\n' | grep -c .)" = 0 ]; then
+            echo "::error::wall: no tracked files, so nothing was checked"
+            exit 1
+          fi
+          fail=0
+          wall() {
+            echo "::error::wall: $1"
+            printf '%s\n' "$2" | sed 's/^/  /'
+            fail=1
+          }
+          hits="$(files | tr '\0' '\n' | grep -E '\.swift$' || true)"
+          [ -z "$hits" ] || wall "a Swift file is tracked" "$hits"
+          hits="$(files | tr '\0' '\n' | grep -F 'internal/engine' || true)"
+          [ -z "$hits" ] || wall "a path holds internal/engine" "$hits"
+          hits="$(files | xargs -0 grep -a -l -F "$kit" || true)"
+          [ -z "$hits" ] || wall "a file names $kit" "$hits"
+          gofiles() { files | tr '\0' '\n' | grep -E '\.go$' | tr '\n' '\0'; }
+          hits="$(gofiles | xargs -0 grep -l -F 'github.com/dcadolph/icelos/' || true)"
+          [ -z "$hits" ] || wall "a Go file names the private module" "$hits"
+          hits="$(gofiles | xargs -0 grep -n -E '^package (engine|format|preset)(_test)?$' || true)"
+          [ -z "$hits" ] || wall "a Go file declares a private package" "$hits"
+          hits="$(files | xargs -0 grep -a -H -F "$reserved" | grep -v -x -F "$freetype" || true)"
+          [ -z "$hits" ] || wall "a file reserves all rights" "$hits"
+          if [ "$fail" = 1 ]; then
+            exit 1
+          fi
+          echo "wall: clean"

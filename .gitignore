@@ -1,0 +1,13 @@
+# Editors and macOS.
+.idea/
+.vscode/
+.DS_Store
+
+# FFmpeg build tree and tarball cache from build-ffmpeg.sh.
+.build/
+
+# Release staging and binaries.
+dist/
+/icelos-verify
+*.test
+*.out
