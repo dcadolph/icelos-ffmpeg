@@ -39,7 +39,7 @@ jobs:
           dl="$RUNNER_TEMP/ffmpeg-download"
           mkdir -p "$dl" "$RUNNER_TEMP/ffmpeg"
           if [ ! -f "$dl/$FFMPEG_ASSET" ]; then
-            curl -fsSL --retry 6 --retry-delay 20 -o "$dl/$FFMPEG_ASSET" \
+            curl -fsSL --retry 6 --retry-delay 20 --retry-all-errors -o "$dl/$FFMPEG_ASSET" \
               "https://github.com/BtbN/FFmpeg-Builds/releases/download/$FFMPEG_TAG/$FFMPEG_ASSET"
           fi
           echo "$FFMPEG_SHA256  $dl/$FFMPEG_ASSET" | sha256sum -c -
@@ -91,7 +91,7 @@ jobs:
         run: |
           set -euo pipefail
           tarball="$RUNNER_TEMP/shellcheck.tar.xz"
-          curl -fsSL --retry 6 --retry-delay 20 -o "$tarball" \
+          curl -fsSL --retry 6 --retry-delay 20 --retry-all-errors -o "$tarball" \
             "https://github.com/koalaman/shellcheck/releases/download/$SHELLCHECK_VERSION/shellcheck-$SHELLCHECK_VERSION.linux.x86_64.tar.xz"
           echo "$SHELLCHECK_SHA256  $tarball" | sha256sum -c -
           tar -xJf "$tarball" -C "$RUNNER_TEMP"

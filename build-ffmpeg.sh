@@ -134,7 +134,7 @@ for i in "${!names[@]}"; do
 	f="$src/${files[$i]}"
 	if [ ! -f "$f" ]; then
 		step "download $n ${versions[$i]}"
-		curl -fL --retry 3 --silent --show-error -o "$f.part" "${urls[$i]}"
+		curl -fL --retry 5 --retry-delay 10 --retry-all-errors --silent --show-error -o "$f.part" "${urls[$i]}"
 		mv "$f.part" "$f"
 	fi
 	got="$(shasum -a 256 "$f" | cut -d' ' -f1)"
